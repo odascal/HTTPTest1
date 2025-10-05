@@ -4,68 +4,85 @@
     <meta charset="UTF-8">
     <title>Ev Kontrol Paneli</title>
     <style>
-        body { font-family: Arial; background: #f0f0f0; text-align: center; }
-        #loginDiv, #controlDiv { margin-top: 50px; }
-        input[type="password"] { padding: 10px; font-size: 16px; }
-        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+        body { font-family: Arial; background: #f0f0f0; text-align: center; padding-top: 50px; }
+        #loginDiv, #controlDiv { margin-top: 20px; }
+        input { padding: 10px; margin: 5px; font-size: 16px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
         #controlDiv { display: none; }
-        h1 { color: #333; }
+        #status { margin-top: 20px; color: green; }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
 </head>
 <body>
 
 <div id="loginDiv">
-    <h1>Ev Kontrol Paneli</h1>
-    <p>Şifreyi girin:</p>
-    <input type="password" id="passwordInput" placeholder="Şifre">
-    <button onclick="checkPassword()">Giriş</button>
-    <p id="loginMessage" style="color:red;"></p>
+    <h1>Giriş Yap</h1>
+    <input type="email" id="email" placeholder="Email"><br>
+    <input type="password" id="password" placeholder="Şifre"><br>
+    <button onclick="login()">Giriş</button>
+    <p id="errorMsg" style="color:red;"></p>
 </div>
 
 <div id="controlDiv">
-    <h1>Hoşgeldiniz!</h1>
+    <h1>Kontrol Paneli</h1>
     <button onclick="toggleCoffee()">Kahve Makinesi</button>
     <button onclick="toggleLight()">Işık</button>
-    <button onclick="viewCamera()">Kamera İzle</button>
     <p id="status"></p>
     <button onclick="logout()">Çıkış Yap</button>
 </div>
 
 <script>
-    const correctPassword = "1234"; // Şifre buraya
+  // Firebase Konfigürasyonunu buraya ekle
+  const firebaseConfig = {
+    apiKey: "API_KEYINIZ",
+    authDomain: "PROJE_ID.firebaseapp.com",
+    projectId: "PROJE_ID",
+    storageBucket: "PROJE_ID.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
+  };
 
-    function checkPassword() {
-        let pass = document.getElementById("passwordInput").value;
-        if(pass === correctPassword) {
-            document.getElementById("loginDiv").style.display = "none";
-            document.getElementById("controlDiv").style.display = "block";
-        } else {
-            document.getElementById("loginMessage").innerText = "Hatalı şifre!";
-        }
-    }
+  // Firebase başlat
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-    function toggleCoffee() {
-        document.getElementById("status").innerText = "Kahve makinesi aç/kapa butonuna basıldı!";
-        // Burada gerçek API çağrısı yapılacak
-    }
+  function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        document.getElementById('loginDiv').style.display = 'none';
+        document.getElementById('controlDiv').style.display = 'block';
+      })
+      .catch((error) => {
+        document.getElementById('errorMsg').innerText = error.message;
+      });
+  }
 
-    function toggleLight() {
-        document.getElementById("status").innerText = "Işık aç/kapa butonuna basıldı!";
-        // Burada gerçek API çağrısı yapılacak
-    }
+  function logout() {
+    auth.signOut().then(() => {
+      document.getElementById('controlDiv').style.display = 'none';
+      document.getElementById('loginDiv').style.display = 'block';
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('errorMsg').innerText = '';
+      document.getElementById('status').innerText = '';
+    });
+  }
 
-    function viewCamera() {
-        document.getElementById("status").innerText = "Kamera görüntüsü açıldı (simülasyon)!";
-        // Burada gerçek kamera akışı gösterilecek
-    }
+  // Simülasyon butonları
+  function toggleCoffee() {
+    document.getElementById('status').innerText = "Kahve makinesi komutu gönderildi!";
+    // Gerçek cihaz kontrolü için Firebase token ile API çağrısı eklenebilir
+  }
 
-    function logout() {
-        document.getElementById("controlDiv").style.display = "none";
-        document.getElementById("loginDiv").style.display = "block";
-        document.getElementById("passwordInput").value = "";
-        document.getElementById("loginMessage").innerText = "";
-        document.getElementById("status").innerText = "";
-    }
+  function toggleLight() {
+    document.getElementById('status').innerText = "Işık komutu gönderildi!";
+    // Gerçek cihaz kontrolü için API çağrısı
+  }
 </script>
 
 </body>
