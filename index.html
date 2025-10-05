@@ -1,7 +1,72 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ev Kontrol Paneli</title>
+    <style>
+        body { font-family: Arial; background: #f0f0f0; text-align: center; }
+        #loginDiv, #controlDiv { margin-top: 50px; }
+        input[type="password"] { padding: 10px; font-size: 16px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+        #controlDiv { display: none; }
+        h1 { color: #333; }
+    </style>
+</head>
 <body>
-    <h1>Merhaba, burasi bilgisayar sunucusu!</h1>
-    <p>Telefon uzerinden giriyorsun dikkat et.</p>
+
+<div id="loginDiv">
+    <h1>Ev Kontrol Paneli</h1>
+    <p>Şifreyi girin:</p>
+    <input type="password" id="passwordInput" placeholder="Şifre">
+    <button onclick="checkPassword()">Giriş</button>
+    <p id="loginMessage" style="color:red;"></p>
+</div>
+
+<div id="controlDiv">
+    <h1>Hoşgeldiniz!</h1>
+    <button onclick="toggleCoffee()">Kahve Makinesi</button>
+    <button onclick="toggleLight()">Işık</button>
+    <button onclick="viewCamera()">Kamera İzle</button>
+    <p id="status"></p>
+    <button onclick="logout()">Çıkış Yap</button>
+</div>
+
+<script>
+    const correctPassword = "1234"; // Şifre buraya
+
+    function checkPassword() {
+        let pass = document.getElementById("passwordInput").value;
+        if(pass === correctPassword) {
+            document.getElementById("loginDiv").style.display = "none";
+            document.getElementById("controlDiv").style.display = "block";
+        } else {
+            document.getElementById("loginMessage").innerText = "Hatalı şifre!";
+        }
+    }
+
+    function toggleCoffee() {
+        document.getElementById("status").innerText = "Kahve makinesi aç/kapa butonuna basıldı!";
+        // Burada gerçek API çağrısı yapılacak
+    }
+
+    function toggleLight() {
+        document.getElementById("status").innerText = "Işık aç/kapa butonuna basıldı!";
+        // Burada gerçek API çağrısı yapılacak
+    }
+
+    function viewCamera() {
+        document.getElementById("status").innerText = "Kamera görüntüsü açıldı (simülasyon)!";
+        // Burada gerçek kamera akışı gösterilecek
+    }
+
+    function logout() {
+        document.getElementById("controlDiv").style.display = "none";
+        document.getElementById("loginDiv").style.display = "block";
+        document.getElementById("passwordInput").value = "";
+        document.getElementById("loginMessage").innerText = "";
+        document.getElementById("status").innerText = "";
+    }
+</script>
+
 </body>
 </html>
