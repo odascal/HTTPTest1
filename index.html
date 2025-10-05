@@ -11,6 +11,7 @@
         #controlDiv { display: none; }
         #status { margin-top: 20px; color: green; }
     </style>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
@@ -34,27 +35,25 @@
 </div>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyB43lgoO6tTDIG8xyKoZt4N_jhvZCUnCuc",
-  authDomain: "httptest2-48a03.firebaseapp.com",
-  projectId: "httptest2-48a03",
-  storageBucket: "httptest2-48a03.firebasestorage.app",
-  messagingSenderId: "622210195517",
-  appId: "1:622210195517:web:9a08c29d13aae675c48a54"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+  // 🔹 BURAYA kendi Firebase konfigürasyonunu ekle
+  const firebaseConfig = {
+    apiKey: "SENIN_API_KEY",
+    authDomain: "PROJE_ADI.firebaseapp.com",
+    projectId: "PROJE_ADI",
+    storageBucket: "PROJE_ADI.appspot.com",
+    messagingSenderId: "SENDER_ID",
+    appId: "APP_ID"
   };
 
   // Firebase başlat
   const app = firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
+  // Giriş fonksiyonu
   function login() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    
+
     auth.signInWithEmailAndPassword(email, password)
       .then(() => {
         document.getElementById('loginDiv').style.display = 'none';
@@ -65,6 +64,7 @@ const app = initializeApp(firebaseConfig);
       });
   }
 
+  // Çıkış fonksiyonu
   function logout() {
     auth.signOut().then(() => {
       document.getElementById('controlDiv').style.display = 'none';
@@ -76,15 +76,15 @@ const app = initializeApp(firebaseConfig);
     });
   }
 
-  // Simülasyon butonları
+  // 🔹 Simülasyon butonları
   function toggleCoffee() {
     document.getElementById('status').innerText = "Kahve makinesi komutu gönderildi!";
-    // Gerçek cihaz kontrolü için Firebase token ile API çağrısı eklenebilir
+    // Gerçek cihaz kontrolü için fetch() ile API çağrısı eklenebilir
   }
 
   function toggleLight() {
     document.getElementById('status').innerText = "Işık komutu gönderildi!";
-    // Gerçek cihaz kontrolü için API çağrısı
+    // Gerçek cihaz kontrolü için fetch() ile API çağrısı
   }
 </script>
 
